@@ -68,16 +68,16 @@ python3 run_all.py data/measurements.txt --runs 3
 
 | Implementation | Input | Time (avg) |
 |---|---|---|
-| go-haiku-4.5 | medium.tx | t 22.4ms |
-| go-opus4.5-with-hint | medium.tx | t 35.5ms |
-| go-opus4.5 | medium.tx | t 39.8ms |
-| go-gemini3-with-hint | medium.tx | t 43.0ms |
-| go-gemini3 | medium.tx | t 57.9ms |
-| go-gpt5.1 | medium.tx | t 93.4ms |
-| go-haiku-4.5-with-hi | nt medium. | txt 103.2ms |
-| go-qwen | medium.tx | t 138.0ms |
-| go-qwen-with-hint | medium.tx | t 138.1ms |
-| go-gpt5.1-with-hint | medium.tx | t 138.9ms |
+| go-opus4.5-with-hint | medium.txt | 36.5ms |
+| go-opus4.5 | medium.txt | 39.5ms |
+| go-haiku-4.5 | medium.txt | 40.5ms |
+| go-gemini3-with-hint | medium.txt | 41.3ms |
+| go-gemini3 | medium.txt | 59.0ms |
+| go-gpt5.1 | medium.txt | 87.1ms |
+| go-haiku-4.5-with-hint | medium.txt | 124.3ms |
+| go-qwen-with-hint | medium.txt | 132.6ms |
+| go-qwen | medium.txt | 137.9ms |
+| go-gpt5.1-with-hint | medium.txt | 219.8ms |
 
 ---
 *Based on the original [1BRC by Gunnar Morling](https://github.com/gunnarmorling/1brc).*

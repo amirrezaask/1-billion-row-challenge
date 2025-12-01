@@ -195,8 +195,8 @@ def main(argv: Optional[List[str]] = None) -> int:
             times.append(avg)
 
     print()
-    header = f"{'Implementation':20} {'Input':10} {'Time (avg)':15}"
-    sep = f"{'-' * 20:20} {'-' * 10:10} {'-' * 15:15}"
+    header = f"{'Implementation':25} {'Input':15} {'Time (avg)':15}"
+    sep = f"{'-' * 25:25} {'-' * 15:15} {'-' * 15:15}"
     print(header)
     print(sep)
 
@@ -204,7 +204,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     sorted_items = sorted(zip(names, times), key=lambda x: (x[1] == 0.0, x[1]))
     for name, t in sorted_items:
         pretty = format_duration(t) if t > 0 else "-"
-        print(f"{name:20} {input_label:10} {pretty:15}")
+        print(f"{name:25} {input_label:15} {pretty:15}")
 
     print()
     return 0
