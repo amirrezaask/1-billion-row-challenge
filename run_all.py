@@ -165,6 +165,12 @@ def main(argv: Optional[List[str]] = None) -> int:
             build=["go", "build", "-o", "1brc-go", "main.go"],
             cmd=["./1brc-go", "{file}"],
         ),
+        Implementation(
+            name="rust-opus4.5-with-hint",
+            cwd="rust-opus4.5-with-hint",
+            build=["cargo", "build", "--release"],
+            cmd=["./target/release/onebrc", "{file}"],
+        ),
         
     ]
 

@@ -58,17 +58,18 @@ python3 run_all.py data/measurements.txt --runs 3
 
 | Implementation | Input | Time (avg) |
 |---|---|---|
-| go-opus4.5 | medium.txt | 21.3ms |
-| go-gemini3-with-hint | medium.txt | 25.1ms |
-| go-haiku-4.5 | medium.txt | 50.8ms |
-| go-opus4.5-with-hint | medium.txt | 51.3ms |
-| go-gemini3 | medium.txt | 92.8ms |
-| go-gpt5.1 | medium.txt | 102.3ms |
-| go-haiku-4.5-with-hint | medium.txt | 152.5ms |
-| go-qwen | medium.txt | 162.1ms |
-| go-qwen-with-hint | medium.txt | 162.2ms |
-| go-gpt5.1-with-hint | medium.txt | 186.4ms |
-| rust-opus-4.5 | medium.txt | 395.1ms |
+| go-gemini3-with-hint | medium.txt | 25.8ms |
+| go-opus4.5-with-hint | medium.txt | 37.8ms |
+| go-gemini3 | medium.txt | 38.8ms |
+| go-opus4.5 | medium.txt | 40.4ms |
+| go-haiku-4.5 | medium.txt | 40.6ms |
+| go-gpt5.1 | medium.txt | 89.2ms |
+| go-qwen | medium.txt | 132.1ms |
+| go-haiku-4.5-with-hint | medium.txt | 133.8ms |
+| go-gpt5.1-with-hint | medium.txt | 145.2ms |
+| go-qwen-with-hint | medium.txt | 149.7ms |
+| rust-opus4.5-with-hint | medium.txt | 249.6ms |
+| rust-opus-4.5 | medium.txt | 276.3ms |
 
 ---
 *Based on the original [1BRC by Gunnar Morling](https://github.com/gunnarmorling/1brc).*
