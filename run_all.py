@@ -91,6 +91,12 @@ def main(argv: Optional[List[str]] = None) -> int:
         default=1,
         help="number of timed runs per implementation (default: 5; first is treated as warmup)",
     )
+    parser.add_argument(
+        "--format",
+        choices=["table", "json", "csv"],
+        default="table",
+        help="output format (default: table)",
+    )
     args = parser.parse_args(argv)
 
     file_path = os.path.abspath(args.file)
@@ -215,19 +221,34 @@ def main(argv: Optional[List[str]] = None) -> int:
             avg = sum(warmup_excluded) / len(warmup_excluded)
             times.append(avg)
 
-    print()
-    header = f"{'Implementation':25} {'Input':15} {'Time (avg)':15}"
-    sep = f"{'-' * 25:25} {'-' * 15:15} {'-' * 15:15}"
-    print(header)
-    print(sep)
-
     input_label = os.path.basename(file_path)
     sorted_items = sorted(zip(names, times), key=lambda x: (x[1] == 0.0, x[1]))
-    for name, t in sorted_items:
-        pretty = format_duration(t) if t > 0 else "-"
-        print(f"{name:25} {input_label:15} {pretty:15}")
 
-    print()
+    results = []
+    for name, t in sorted_items:
+        results.append({"name": name, "input": input_label, "time": t})
+
+    if args.format == "table":
+        print()
+        header = f"{'Implementation':25} {'Input':15} {'Time (avg)':15}"
+        sep = f"{'-' * 25:25} {'-' * 15:15} {'-' * 15:15}"
+        print(header)
+        print(sep)
+
+        for item in results:
+            pretty = format_duration(item["time"]) if item["time"] > 0 else "-"
+            print(f"{item['name']:25} {item['input']:15} {pretty:15}")
+
+        print()
+    elif args.format == "json":
+        import json
+        print(json.dumps(results))
+    elif args.format == "csv":
+        import csv
+        writer = csv.DictWriter(sys.stdout, fieldnames=["name", "input", "time"])
+        writer.writeheader()
+        writer.writerows(results)
+
     return 0
 
 
