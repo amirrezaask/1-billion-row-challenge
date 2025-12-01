@@ -16,6 +16,96 @@ type stats struct {
 	count int64
 }
 
+type entry struct {
+	key   string
+	used  bool
+	stats stats
+}
+
+type table struct {
+	entries []entry
+	mask    int
+}
+
+func nextPow2(n int) int {
+	if n <= 1 {
+		return 1
+	}
+	p := 1
+	for p < n {
+		p <<= 1
+	}
+	return p
+}
+
+func newTable(expected int) *table {
+	size := nextPow2(expected * 2)
+	return &table{
+		entries: make([]entry, size),
+		mask:    size - 1,
+	}
+}
+
+func hashBytes(b []byte) uint64 {
+	var h uint64 = 1469598103934665603
+	for _, c := range b {
+		h ^= uint64(c)
+		h *= 1099511628211
+	}
+	return h
+}
+
+func (t *table) add(nameBytes []byte, temp int32) {
+	h := hashBytes(nameBytes)
+	idx := int(h) & t.mask
+
+	for {
+		e := &t.entries[idx]
+		if !e.used {
+			e.used = true
+			e.key = string(nameBytes)
+			e.stats = stats{
+				min:   temp,
+				max:   temp,
+				sum:   int64(temp),
+				count: 1,
+			}
+			return
+		}
+		if e.key == string(nameBytes) {
+			s := e.stats
+			if temp < s.min {
+				s.min = temp
+			}
+			if temp > s.max {
+				s.max = temp
+			}
+			s.sum += int64(temp)
+			s.count++
+			e.stats = s
+			return
+		}
+		idx = (idx + 1) & t.mask
+	}
+}
+
+func (t *table) toSortedKeysAndStats() ([]string, map[string]stats) {
+	out := make(map[string]stats, len(t.entries))
+	for i := range t.entries {
+		e := &t.entries[i]
+		if !e.used {
+			continue
+		}
+		out[e.key] = e.stats
+	}
+	names := make([]string, 0, len(out))
+	for k := range out {
+		names = append(names, k)
+	}
+	sort.Strings(names)
+	return names, out
+}
+
 func parseTemperature(b []byte) int32 {
 	n := len(b)
 	if n == 0 {
@@ -40,9 +130,7 @@ func parseTemperature(b []byte) int32 {
 	return sign * v
 }
 
-func processChunk(data []byte, start, end int, out map[string]stats) {
-	local := out
-
+func processChunk(data []byte, start, end int, tbl *table) {
 	i := start
 	for i < end {
 		lineStart := i
@@ -77,26 +165,7 @@ func processChunk(data []byte, start, end int, out map[string]stats) {
 
 		temp := parseTemperature(valBytes)
 
-		name := string(nameBytes)
-		s, ok := local[name]
-		if !ok {
-			local[name] = stats{
-				min:   temp,
-				max:   temp,
-				sum:   int64(temp),
-				count: 1,
-			}
-		} else {
-			if temp < s.min {
-				s.min = temp
-			}
-			if temp > s.max {
-				s.max = temp
-			}
-			s.sum += int64(temp)
-			s.count++
-			local[name] = s
-		}
+		tbl.add(nameBytes, temp)
 	}
 }
 
@@ -135,14 +204,10 @@ func main() {
 
 	defer syscall.Munmap(data)
 
-	global := make(map[string]stats, 1<<18)
-	processChunk(data, 0, int(size), global)
+	tbl := newTable(1 << 18)
+	processChunk(data, 0, int(size), tbl)
 
-	names := make([]string, 0, len(global))
-	for name := range global {
-		names = append(names, name)
-	}
-	sort.Strings(names)
+	names, global := tbl.toSortedKeysAndStats()
 
 	fmt.Print("{")
 	for i, name := range names {
