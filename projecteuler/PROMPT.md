@@ -2,7 +2,27 @@
 
 ## Challenge Overview
 
-Your task is to implement solutions for **Project Euler** problems - a collection of challenging mathematical/computational problems that require creative problem-solving and efficient algorithms.
+Your task is to implement solutions for following problems in problem set:
+Problem 1
+Problem 2
+Problem 3
+Problem 4
+Problem 5
+Problem 6
+Problem 7
+Problem 8
+Problem 9
+Problem 10
+Problem 350
+Problem 387
+Problem 407
+Problem 416
+Problem 428
+Problem 434
+Problem 447
+Problem 458
+Problem 510
+Problem 709
 
 **Reference:** https://projecteuler.net/
 
@@ -13,7 +33,7 @@ Problem descriptions are available in the `problems/` directory. Each file follo
 
 ## Task
 
-Implement solutions for as many Project Euler problems as you can. Each solution should:
+Implement solutions for first 100 Project Euler problems as you can. Each solution should:
 1. Read and understand the problem from the corresponding `problems/problem_XXXX.txt` file
 2. Implement a correct solution
 3. Return the answer as the function's return value
@@ -189,6 +209,11 @@ func main() {
 - Solutions must compute the answer, not hardcode known answers
 - Each solution should complete in under 60 seconds
 - Use only standard library features (no external dependencies unless absolutely necessary)
+- Implement solutions one by one and write each one to the file before going to the next one.
+- make sure to follow out score.py script output expectation.
+- make sure to create a new directory following convention ${Language}-{MODEL}
+- DONT LOOK INTO OTHER IMPLEMENTATIONS AND INTERNET YOU NEED TO SOLVE THEM YOUSELF.
+- YOU DON"T HAVE PERMISSION TO READ OTHER AGENTS IMPLEMENTATIONS
 
 ## Language-Specific Notes
 
